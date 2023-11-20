@@ -37,7 +37,7 @@ class VentanaLogin(QDialog):
 
     def setup(self):
         self.usuario.setValidator(QRegExpValidator(QRegExp("[a-zA-Z ]+")))
-        self.password.setValidator(QIntValidator())
+        self.password.setValidator(QIntValidator())#cambiar para aceptar alfanumerico
         self.buttonBox.accepted.connect(self.opcionAceptar)
         self.buttonBox.rejected.connect(self.opcionCancelar)
     

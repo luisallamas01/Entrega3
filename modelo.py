@@ -16,7 +16,7 @@ class Sistema():
         self.__usuarios= dicc
 
     def verificar_usu(self, usu, password):
-        print(self.__usuarios[usu]==password)
+        
         if self.__usuarios[usu]==password:
             return True
         else:
