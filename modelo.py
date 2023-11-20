@@ -17,7 +17,7 @@ class Sistema():
 
     def verificar_usu(self, usu, password):
         
-        if self.__usuarios[usu]==password:
+        if self.__usuarios.get(usu, False):
             return True
         else:
             print('no esta')

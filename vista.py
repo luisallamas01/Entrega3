@@ -72,7 +72,7 @@ class Ventana_men(QDialog):
         ruta_actual = os.getcwd()
 
         # Obtener la lista de subcarpetas en el directorio actual
-        subcarpetas = [nombre for nombre in os.listdir(ruta_actual) if os.path.isdir(os.path.join(ruta_actual, nombre))]
+        subcarpetas = [nombre for nombre in os.listdir(ruta_actual) if os.path.isdir(os.path.join(ruta_actual, nombre)) and nombre.startswith('DCM')]
 
         # Crear botones para cada subcarpeta
         self.botones_subcarpetas = []
