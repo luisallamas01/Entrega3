@@ -21,8 +21,12 @@ class VentanaPpal(QMainWindow):
     def salir(self):
         pass
     def recibir_login(self, u, p):
-        self.__miCoordinador.recibir_login(u, p)
+        x = self.__miControlador.recibir_login1(u, p)
+        if x:
+            return True
 
+    def set_controlador(self,c):
+        self.__miControlador  = c
 
 class VentanaLogin(QDialog):
     def __init__(self,ppal=None):
@@ -38,19 +42,34 @@ class VentanaLogin(QDialog):
         self.buttonBox.rejected.connect(self.opcionCancelar)
     
     def opcionAceptar(self):
-        w= QLabel(self)
-        w.setText("Ha ingresado con éxito")
-        w.show()
+        
         login= self.usuario.text()
-        password= self.password.text() 
+        password= self.password.text()
+        a = self.__ventanaPadre.recibir_login(login,password)
+        
+        if a:
+            print('hola')
+            ventana_menu = Ventana_men()
+            self.hide()
+            ventana_menu.show()
+            print('puta')
+        else:
+            self.mensaje_('Contraseña o usuario incorrecto, vuelva a intentar.')
+
+    def mensaje_(self,m):
+        self.mensaje.setText(m)
         #Verificar que esté en el json
+
         #Ventana_men= Ventana_men()
     def opcionCancelar(self):
-        self.__ventanaPadre.show()
+        self.usuario.text('')
+        self.password.text('')
+
 class Ventana_men(QDialog):
     def __init__(self,ppal=None): #Lo que se hace aquí es crear una ventana que me diga las carpetas DCM idsponibles y que el usuario seleccione una
         super().__init__(ppal)
-        
+        loadUi('menu.ui',self)
+        self.setup()
         ruta_actual = os.getcwd()
 
         # Obtener la lista de subcarpetas en el directorio actual

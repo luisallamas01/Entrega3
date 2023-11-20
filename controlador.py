@@ -7,15 +7,16 @@ class Coordinador:
     def __init__(self,vista,modelo):
         self.__miVista = vista
         self.__miModelo = modelo
-    def recibir_login(self, u,p):
-        self.__miModelo.verificar_usu(u,p)
-
+    def recibir_login1(self, u,p):
+        b= self.__miModelo.verificar_usu(u,p)
+        if b :
+            return True
 def main():
     app=QApplication(sys.argv)
     mi_vista=VentanaPpal()
     mi_modelo=Sistema()
     mi_controlador=Coordinador(mi_vista,mi_modelo)
-    #mi_vista.setControlador(mi_controlador)
+    mi_vista.set_controlador(mi_controlador)
     mi_vista.show()
     sys.exit(app.exec_())
 
