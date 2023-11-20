@@ -53,15 +53,13 @@ class VentanaLogin(QDialog):
             ventana_menu = Ventana_men(self)
             self.hide()
             ventana_menu.show()
-            #print('puta')
+         
         else:
             self.mensaje_('Contraseña o usuario incorrecto, vuelva a intentar.')
 
     def mensaje_(self,m):
-        self.mensaje.setText(m)
-        #Verificar que esté en el json
-
-        #Ventana_men= Ventana_men()
+        self.mensaje.setText(m) #buscar si este metodo sirve
+       
     def opcionCancelar(self):
         self.usuario.text('')
         self.password.text('')
