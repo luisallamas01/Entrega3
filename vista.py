@@ -37,7 +37,7 @@ class VentanaLogin(QDialog):
 
     def setup(self):
         self.usuario.setValidator(QRegExpValidator(QRegExp("[a-zA-Z ]+")))
-        self.password.setValidator(QIntValidator())#cambiar para aceptar alfanumerico
+        self.password.setValidator(QIntValidator())
         self.buttonBox.accepted.connect(self.opcionAceptar)
         self.buttonBox.rejected.connect(self.opcionCancelar)
     
@@ -45,14 +45,15 @@ class VentanaLogin(QDialog):
         
         login= self.usuario.text()
         password= self.password.text()
+        
         a = self.__ventanaPadre.recibir_login(login,password)
         
         if a:
             print('hola')
-            ventana_menu = Ventana_men()
+            ventana_menu = Ventana_men(self)
             self.hide()
             ventana_menu.show()
-            print('puta')
+            #print('puta')
         else:
             self.mensaje_('Contraseña o usuario incorrecto, vuelva a intentar.')
 
@@ -69,7 +70,7 @@ class Ventana_men(QDialog):
     def __init__(self,ppal=None): #Lo que se hace aquí es crear una ventana que me diga las carpetas DCM idsponibles y que el usuario seleccione una
         super().__init__(ppal)
         loadUi('menu.ui',self)
-        self.setup()
+        #self.setup()
         ruta_actual = os.getcwd()
 
         # Obtener la lista de subcarpetas en el directorio actual

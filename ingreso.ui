@@ -94,14 +94,17 @@
     <string>ACCEDER</string>
    </property>
   </widget>
-  <widget class="QTextEdit" name="mensaje">
+  <widget class="QLabel" name="mensaje">
    <property name="geometry">
     <rect>
-     <x>30</x>
-     <y>130</y>
-     <width>221</width>
-     <height>21</height>
+     <x>60</x>
+     <y>140</y>
+     <width>241</width>
+     <height>20</height>
     </rect>
+   </property>
+   <property name="text">
+    <string/>
    </property>
   </widget>
  </widget>
