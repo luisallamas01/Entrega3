@@ -11,6 +11,9 @@ class Coordinador:
         b= self.__miModelo.verificar_usu(u,p)
         if b :
             return True
+    def recibe_rut(self, r):
+        a=self.__miModelo.abrir_ruta(r)
+        return True
 def main():
     app=QApplication(sys.argv)
     mi_vista=VentanaPpal()
@@ -22,4 +25,4 @@ def main():
 
 if __name__ == '__main__':
     main()
-    
+#

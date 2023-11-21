@@ -1,7 +1,7 @@
 import sys 
 from PyQt5.QtWidgets import QApplication,QMainWindow , QDialog, QMessageBox,QLineEdit,QTextEdit
-from PyQt5.QtWidgets import QApplication, QLabel, QPushButton, QVBoxLayout, QSlider,QPixmap
-from PyQt5.QtGui import QRegExpValidator, QIntValidator
+from PyQt5.QtWidgets import QApplication, QLabel, QPushButton, QVBoxLayout, QSlider
+from PyQt5.QtGui import QRegExpValidator, QIntValidator, QPixmap
 from PyQt5.QtCore import Qt,QRegExp
 from PyQt5.uic import loadUi
 import os
@@ -25,7 +25,9 @@ class VentanaPpal(QMainWindow):
         x = self.__miControlador.recibir_login1(u, p)
         if x:
             return True
-
+    def recibir_ruta(self, r):
+        x= self.__miControlador.recibe_rut(r)
+        
     def set_controlador(self,c):
         self.__miControlador  = c
 
@@ -69,35 +71,34 @@ class Ventana_men(QDialog):
     def __init__(self,ppal=None): #Lo que se hace aquí es crear una ventana que me diga las carpetas DCM idsponibles y que el usuario seleccione una
         super().__init__(ppal)
         loadUi('menu.ui',self)
+        self.__ventanaPadre=ppal
         self.setup()
 
     def setup(self):
             self.abrir_ruta.clicked.connect(self.abrir_carpeta)
             self.carpeta = None  # Inicializar carpeta como None
-            self.slider = QSlider(self)
-            self.layout = QVBoxLayout(self)
-            self.layout.addWidget(self.slider)
-            self.imagen_label = QLabel(self)
-            self.layout.addWidget(self.imagen_label)
-
-            self.slider.valueChanged.connect(self.mostrar_imagen)
+            
     def abrir_carpeta(self):
+        
             self.carpeta = self.ruta.text()
             lista_archivos = os.listdir(self.carpeta)
-
-            # Configurar el slider
-            self.slider.setMinimum(0)
-            self.slider.setMaximum(len(lista_archivos) - 1)
-            self.slider.setSingleStep(1)
-
-            # Mostrar la primera imagen
-            if lista_archivos:
-                self.mostrar_imagen(0)
-    def mostrar_imagen(self, indice):#en imagen_path lo que se carga es el dataset, hay que cambiar la logica con un metodo que extraiga el data set,
-            if self.carpeta:
-                lista_archivos = os.listdir(self.carpeta)
-                if 0 <= indice < len(lista_archivos):
-                    imagen_path = os.path.join(self.carpeta, lista_archivos[indice])
-                    pixmap = QPixmap(imagen_path)
-                    self.imagen_label.setPixmap(pixmap)
+            #self.__ventanaPadre.mi
+            ventana_vista = Ventana_vis(self)
+            self.hide()
+            ventana_vista.show()
+class Ventana_vis(QDialog):
+    def __init__(self,ppal=None): #Lo que se hace aquí es crear una ventana que me diga las carpetas DCM idsponibles y que el usuario seleccione una
+       super().__init__(ppal)
+       loadUi('vizualizador.ui',self)
+       self.__ventanaPadre=ppal
+       self.setup()
     
+    def setup(self):
+        self.siguiente.cliked.connect(self.siguiente_img)
+        self.atras.cliked.connect(self.atras_img)
+        self.Slider.cliked.connect(self.slider_img)
+    
+    
+     
+     
+   
