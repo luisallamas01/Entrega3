@@ -1,10 +1,11 @@
 import sys 
 from PyQt5.QtWidgets import QApplication,QMainWindow , QDialog, QMessageBox,QLineEdit,QTextEdit
-from PyQt5.QtWidgets import QApplication, QLabel, QPushButton, QVBoxLayout
+from PyQt5.QtWidgets import QApplication, QLabel, QPushButton, QVBoxLayout, QSlider,QPixmap
 from PyQt5.QtGui import QRegExpValidator, QIntValidator
 from PyQt5.QtCore import Qt,QRegExp
 from PyQt5.uic import loadUi
 import os
+import pydicom
 class VentanaPpal(QMainWindow):
     def __init__(self,ppal=None):
         super().__init__(ppal)
@@ -68,36 +69,35 @@ class Ventana_men(QDialog):
     def __init__(self,ppal=None): #Lo que se hace aquí es crear una ventana que me diga las carpetas DCM idsponibles y que el usuario seleccione una
         super().__init__(ppal)
         loadUi('menu.ui',self)
-        #self.setup()
-        ruta_actual = os.getcwd()
+        self.setup()
 
-        # Obtener la lista de subcarpetas en el directorio actual
-        subcarpetas = [nombre for nombre in os.listdir(ruta_actual) if os.path.isdir(os.path.join(ruta_actual, nombre)) and nombre.startswith('DCM')]
+    def setup(self):
+            self.abrir_ruta.clicked.connect(self.abrir_carpeta)
+            self.carpeta = None  # Inicializar carpeta como None
+            self.slider = QSlider(self)
+            self.layout = QVBoxLayout(self)
+            self.layout.addWidget(self.slider)
+            self.imagen_label = QLabel(self)
+            self.layout.addWidget(self.imagen_label)
 
-        # Crear botones para cada subcarpeta
-        self.botones_subcarpetas = []
+            self.slider.valueChanged.connect(self.mostrar_imagen)
+    def abrir_carpeta(self):
+            self.carpeta = self.ruta.text()
+            lista_archivos = os.listdir(self.carpeta)
 
-        for subcarpeta in subcarpetas:
-            boton = QPushButton(subcarpeta)
-            boton.clicked.connect(self.mostrar_mensaje)
-            self.botones_subcarpetas.append(boton)
+            # Configurar el slider
+            self.slider.setMinimum(0)
+            self.slider.setMaximum(len(lista_archivos) - 1)
+            self.slider.setSingleStep(1)
 
-        # Configurar el diseño de la ventana
-        layout = QVBoxLayout()
-
-        for boton in self.botones_subcarpetas:
-            layout.addWidget(boton)
-
-        self.setLayout(layout)
-
-    def mostrar_mensaje(self):
-        # Mostrar el mensaje correspondiente al botón presionado
-        boton_presionado = self.sender()
-        mensaje = f"Has presionado el botón '{boton_presionado.text()}'"
-        print(mensaje)
-
-
-    def opcionCancelar(self):
-        self.__ventanaPadre.show()
-
+            # Mostrar la primera imagen
+            if lista_archivos:
+                self.mostrar_imagen(0)
+    def mostrar_imagen(self, indice):#en imagen_path lo que se carga es el dataset, hay que cambiar la logica con un metodo que extraiga el data set,
+            if self.carpeta:
+                lista_archivos = os.listdir(self.carpeta)
+                if 0 <= indice < len(lista_archivos):
+                    imagen_path = os.path.join(self.carpeta, lista_archivos[indice])
+                    pixmap = QPixmap(imagen_path)
+                    self.imagen_label.setPixmap(pixmap)
     
