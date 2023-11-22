@@ -75,17 +75,20 @@
    <widget class="QLabel" name="label_2">
     <property name="geometry">
      <rect>
-      <x>0</x>
-      <y>340</y>
-      <width>131</width>
-      <height>161</height>
+      <x>10</x>
+      <y>360</y>
+      <width>121</width>
+      <height>131</height>
      </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">border-image: url(:/cct/Escudo-UdeA.svg.png);</string>
     </property>
     <property name="text">
      <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap>Escudo-UdeA.svg.png</pixmap>
+    </property>
+    <property name="scaledContents">
+     <bool>true</bool>
     </property>
    </widget>
   </widget>

@@ -16,6 +16,7 @@ class Sistema():
         with open('Usuarios') as file:
             dicc= json.load(file)
         self.__usuarios= dicc
+        self.__ruta=""
 
     def verificar_usu(self, usu, password):
         
@@ -24,7 +25,13 @@ class Sistema():
         else:
             print('no esta')
 
-    def abrir_ruta(self, r): #esta función me debe retornar el plot del pixel array y los 5 datos del paciente
+    def guardar_ruta(self, r): #esta función me debe retornar el plot del pixel array y los 5 datos del paciente
+        self.__ruta= r
+
+    def enviar_ruta(self):
+        return self.__ruta
+
+    def abrir_img(self, img):
         dcm = pydicom.dcmread(r)
         img = dcm.pixel_array
 
@@ -36,6 +43,8 @@ class Sistema():
             plt.imshow(img, cmap = plt.cm.bone)
         plt.axis('off')
         plt.savefig("temp_image.png")
+
+        return(plt.imshow(img))
         
     def metadata(self,r):
         
@@ -46,4 +55,6 @@ class Sistema():
         s = dcm.PatientSex
         e = dcm.PatientAge
         p = dcm.PatientWeight
+
+        return n,c,s,e,p
 
