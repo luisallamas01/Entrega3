@@ -6,16 +6,22 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>664</width>
-    <height>413</height>
+    <width>687</width>
+    <height>329</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(187, 214, 185)</string>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QLabel" name="label_3">
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(187, 214, 185)</string>
+     </property>
      <property name="text">
       <string>ACCEDER</string>
      </property>
@@ -29,7 +35,11 @@
     </widget>
    </item>
    <item>
-    <widget class="QLineEdit" name="usuario"/>
+    <widget class="QLineEdit" name="usuario">
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(255, 255, 255);</string>
+     </property>
+    </widget>
    </item>
    <item>
     <widget class="QLabel" name="label_2">
@@ -40,6 +50,9 @@
    </item>
    <item>
     <widget class="QLineEdit" name="password">
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(255, 255, 255);</string>
+     </property>
      <property name="echoMode">
       <enum>QLineEdit::Password</enum>
      </property>

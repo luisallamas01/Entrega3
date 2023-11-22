@@ -1,6 +1,7 @@
 import json
 import os
 import pydicom
+import matplotlib.pyplot as plt
 
 dicc={'medicoAnalitico': 'bio12345', 'Yesid': '31415', 'Luisa': '12345', 'Paulina': '27182'}
 usuarios=json.dumps(dicc, indent=4)
@@ -24,6 +25,25 @@ class Sistema():
             print('no esta')
 
     def abrir_ruta(self, r): #esta función me debe retornar el plot del pixel array y los 5 datos del paciente
-        dcm= pydicom.dcmread(r)
+        dcm = pydicom.dcmread(r)
+        img = dcm.pixel_array
 
+        if (len(img.shape))==3:
+            slice_index = img.shape[0] // 2
+            selected_slice = img[slice_index, :, :]
+            plt.imshow(selected_slice, cmap=plt.cm.bone)
+        else:
+            plt.imshow(img, cmap = plt.cm.bone)
+        plt.axis('off')
+        plt.savefig("temp_image.png")
+        
+    def metadata(self,r):
+        
+        dcm = pydicom.dcmread(r)
+
+        n = dcm.PatientName
+        c = dcm.PatientID
+        s = dcm.PatientSex
+        e = dcm.PatientAge
+        p = dcm.PatientWeight
 

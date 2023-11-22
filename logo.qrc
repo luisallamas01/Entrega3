@@ -1,0 +1,5 @@
+<RCC>
+  <qresource prefix="cct">
+    <file>Escudo-UdeA.svg.png</file>
+  </qresource>
+</RCC>
