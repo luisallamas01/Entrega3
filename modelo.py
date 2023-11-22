@@ -32,7 +32,7 @@ class Sistema():
         return self.__ruta
 
     def abrir_img(self, img):
-        dcm = pydicom.dcmread(r)
+        dcm = pydicom.dcmread(img)
         img = dcm.pixel_array
 
         if (len(img.shape))==3:
@@ -44,10 +44,9 @@ class Sistema():
         plt.axis('off')
         plt.savefig("temp_image.png")
 
-        return(plt.imshow(img))
+        #return(plt.imshow(img))
         
     def metadata(self,r):
-        
         dcm = pydicom.dcmread(r)
 
         n = dcm.PatientName
