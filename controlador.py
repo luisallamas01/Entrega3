@@ -7,6 +7,13 @@ class Coordinador:
     def __init__(self,vista,modelo):
         self.__miVista = vista
         self.__miModelo = modelo
+        
+
+    def actualizar_imagen(self):
+        
+        imagen_bytes = self.__miModelo.mandar_img()
+        return imagen_bytes
+
     def recibir_login1(self, u,p):
         b= self.__miModelo.verificar_usu(u,p)
         if b :
@@ -18,6 +25,13 @@ class Coordinador:
     def enviar_rut(self):
         b= self.__miModelo.enviar_ruta()
         return b
+    def recibir_lista(self, l):
+        a = self.__miModelo.guardar_lista(l)
+
+    def send_img(self):
+        return self.__miModelo.mandar_img()
+    
+
     
 def main():
     app=QApplication(sys.argv)
