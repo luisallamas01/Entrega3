@@ -33,7 +33,8 @@ class Sistema():
         self.__ruta= r
 
     def enviar_ruta(self):
-        return self.__ruta
+        return len(self.archivos)
+    
     def mandar_img(self):
         for i in self.archivos:
             ruta = f'{self.__ruta}/{i}'

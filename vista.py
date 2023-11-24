@@ -1,11 +1,15 @@
 import sys 
 from PyQt5.QtWidgets import QApplication,QMainWindow , QDialog, QMessageBox,QLineEdit,QTextEdit
-from PyQt5.QtWidgets import QApplication, QLabel, QPushButton, QVBoxLayout, QSlider, QFileDialog
+from PyQt5.QtWidgets import QApplication, QLabel, QPushButton, QVBoxLayout, QSlider, QFileDialog, QWidget
 from PyQt5.QtGui import QRegExpValidator, QIntValidator, QPixmap
 from PyQt5.QtCore import Qt,QRegExp
 from PyQt5.uic import loadUi
+import pyqtgraph as pg
 import os
-
+import matplotlib.pyplot as plt
+from io import BytesIO
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.figure import Figure
 class VentanaPpal(QMainWindow):
     def __init__(self,ppal=None):
         super().__init__(ppal)
@@ -144,29 +148,43 @@ class Ventana_vis(QDialog):
     def __init__(self,ppal=None): #Lo que se hace aquí es crear una ventana que me diga las carpetas DCM idsponibles y que el usuario seleccione una
        super().__init__(ppal)
        loadUi('visualizador.ui',self)
+       self.figure = Figure()
+       self.layout = QVBoxLayout()
+       self.canvas = FigureCanvas(self.figure)
+       self.layout.addWidget(self.canvas)
        self.__ventanaPadre=ppal
-       #self.carpeta= self.__ventanaPadre.traer_ruta()
-       #print(self.carpeta)
+       
        self.setup()
        self.controlador = self.__ventanaPadre.r_controlador2
-       
+       self.numero = self.controlador.enviar_rut()
+       print(self.numero)
     def set_controlador(self):
         self.controlador = self.__ventanaPadre.r_controlador2()
-        self.plot_widget = pg.PlotWidget()
-        self.layout.addWidget(self.plot_widget)
+        
+        
 
     
     def setup(self):
         self.slider.valueChanged.connect(self.actualizar_img)
         # self.siguiente.cliked.connect(self.siguiente_img)
         # self.atras.cliked.connect(self.atras_img)
+        a = self.numero 
+        self.slider.setMinimum(0)   
+        self.slider.setMaximum(a-1)
+        
         
     def actualizar_img(self):
         self.img = self.controlador.actualizar_imagen() 
         print('se pudo')
-        pixmap = QPixmap()
-        pixmap.loadFromData(self.imagen)
-        self.labelImagen.setPixmap(pixmap)
+        self.figure.clear()
+        ax = self.figure.add_subplot(111)
+        img = plt.imread(BytesIO(self.img))
+        ax.imshow(img)
+        self.canvas.draw()
+        # pixmap = QPixmap()
+        # pixmap.loadFromData(self.imagen)
+        # self.labelImagen.setPixmap(pixmap)
+        # print('hola')
     
      
      
