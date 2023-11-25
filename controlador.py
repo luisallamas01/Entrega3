@@ -28,8 +28,11 @@ class Coordinador:
     def recibir_lista(self, l):
         a = self.__miModelo.guardar_lista(l)
 
-    def send_img(self):
-        return self.__miModelo.mandar_img()
+    def send_img(self,h):
+        return self.__miModelo.mandar_img(h)
+    
+    def enviar_metadata(self):
+        return self.__miModelo.metadata()
     
 
     

@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import matplotlib.pyplot as plt
 from io import BytesIO
+from PIL import Image
 
 dicc={'medicoAnalitico': 'bio12345', 'Yesid': '31415', 'Luisa': '12345', 'Paulina': '27182'}
 usuarios=json.dumps(dicc, indent=4)
@@ -33,32 +34,36 @@ class Sistema():
         self.__ruta= r
 
     def enviar_ruta(self):
+        print(len(self.archivos))
         return len(self.archivos)
-    
-    def mandar_img(self):
-        for i in self.archivos:
-            ruta = f'{self.__ruta}/{i}'
-            dcm = pydicom.dcmread(ruta)
-            img = dcm.pixel_array
 
-            if (len(img.shape))==3:
-                slice_index = img.shape[0] // 2
-                selected_slice = img[slice_index, :, :]
-                a = plt.imshow(selected_slice, cmap=plt.cm.bone)
-                datos_imagen = a.get_array()
-                buffer = BytesIO()
-                np.save(buffer, datos_imagen)
-                imagen_bytes = buffer.getvalue()
-                return imagen_bytes
-            else:
-                a = plt.imshow(img, cmap = plt.cm.bone)
-                datos_imagen = a.get_array()
-                buffer = BytesIO()
-                np.save(buffer, datos_imagen)
-                imagen_bytes = buffer.getvalue()
-                return imagen_bytes
-            plt.axis('off')
-            plt.savefig("temp_image.png")
+    
+    def mandar_img(self,n):
+        
+        ruta = f'{self.__ruta}/{self.archivos[n]}'
+        dcm = pydicom.dcmread(ruta)
+        img = np.array(dcm.pixel_array)
+
+        return img
+
+            # if (len(img.shape))==3:
+            #     slice_index = img.shape[0] // 2
+            #     selected_slice = img[slice_index, :, :]
+            #     a = plt.imshow(selected_slice, cmap=plt.cm.bone)
+            #     datos_imagen = a.get_array()
+            #     buffer = BytesIO()
+            #     np.save(buffer, datos_imagen)
+            #     imagen_bytes = buffer.getvalue()
+            #     return imagen_bytes
+            # else:
+            #     a = plt.imshow(img, cmap = plt.cm.bone)
+            #     datos_imagen = a.get_array()
+            #     buffer = BytesIO()
+            #     np.save(buffer, datos_imagen)
+            #     imagen_bytes = buffer.getvalue()
+            #     return imagen_bytes
+            # plt.axis('off')
+            # plt.savefig("temp_image.png")
             
 
 
@@ -79,14 +84,14 @@ class Sistema():
         self.archivos = l
            #return(plt.imshow(img))
         
-    def metadata(self,r):
-        dcm = pydicom.dcmread(r)
+    def metadata(self):
+        dcm = pydicom.dcmread (f'{self.__ruta}/{self.archivos[0]}')
 
         n = dcm.PatientName
         c = dcm.PatientID
         s = dcm.PatientSex
-        e = dcm.PatientAge
+        e = 'None'
         p = dcm.PatientWeight
 
-        return n,c,s,e,p
+        return f'\n\n\nNombre: {n} \n\nCedula: {c} \n\nSexo: {s} \n\nEdad: {e} \n\nPeso: {p}'
 

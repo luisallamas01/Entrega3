@@ -154,9 +154,9 @@ class Ventana_vis(QDialog):
        self.layout.addWidget(self.canvas)
        self.__ventanaPadre=ppal
        
-       self.setup()
-       self.controlador = self.__ventanaPadre.r_controlador2
+       self.controlador = self.__ventanaPadre.r_controlador2()
        self.numero = self.controlador.enviar_rut()
+       self.setup()
        print(self.numero)
     def set_controlador(self):
         self.controlador = self.__ventanaPadre.r_controlador2()
@@ -165,22 +165,35 @@ class Ventana_vis(QDialog):
 
     
     def setup(self):
-        self.slider.valueChanged.connect(self.actualizar_img)
         # self.siguiente.cliked.connect(self.siguiente_img)
         # self.atras.cliked.connect(self.atras_img)
         a = self.numero 
+        self.valor_slider = 0
         self.slider.setMinimum(0)   
         self.slider.setMaximum(a-1)
+        self.slider.valueChanged.connect(self.actualizar_img)
+        self.meta.setText(self.controlador.enviar_metadata())
         
         
-    def actualizar_img(self):
-        self.img = self.controlador.actualizar_imagen() 
-        print('se pudo')
-        self.figure.clear()
-        ax = self.figure.add_subplot(111)
-        img = plt.imread(BytesIO(self.img))
-        ax.imshow(img)
-        self.canvas.draw()
+    def actualizar_img(self,valor):
+        self.valor_slider = valor
+        print(self.valor_slider)
+        self.img = self.controlador.send_img(self.valor_slider) 
+        plt.imsave('imagen.png', self.img, cmap='gray')
+        pixmap = QPixmap("imagen.png")
+        self.imagen.setPixmap(pixmap)
+        os.remove('imagen.png')
+    
+
+        # Crear un QPixmap desde la imagen y configurarlo en un QLabel
+        #pixmap = QPixmap('imagen.png')
+        # etiqueta_imagen = QLabel()
+        # etiqueta_imagen.setPixmap(pixmap)
+        # # self.figure.clear()
+        # ax = self.figure.add_subplot(111)
+        # img = plt.imread(BytesIO(self.img))
+        # ax.imshow(img)
+        # self.canvas.draw()
         # pixmap = QPixmap()
         # pixmap.loadFromData(self.imagen)
         # self.labelImagen.setPixmap(pixmap)
